@@ -5,12 +5,12 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateTodoDTO } from './dtos';
-import { EditTodoDTO } from './dtos/edit-post.dto';
+import { CreateTodoDTO, EditTodoDTO } from './dtos';
 import { TodoService } from './todo.service';
 
 @ApiTags('Todos')
@@ -20,10 +20,10 @@ export class TodoController {
 
   @Get()
   async getMany() {
-    const data = await this.todoservice.getMany();
+    const todo = await this.todoservice.getMany();
     return {
       message: 'Correct Request',
-      data,
+      todo,
     };
   }
 
@@ -40,6 +40,15 @@ export class TodoController {
   @Put(':id')
   editOne(@Param('id') id: number, @Body() dto: EditTodoDTO) {
     return this.todoservice.editOne(id, dto);
+  }
+
+  @Patch(':id/done')
+  async isDone(@Param('id') id: number) {
+    await this.todoservice.isDone(id);
+
+    return {
+      isDone: 'True',
+    };
   }
 
   @Delete(':id')

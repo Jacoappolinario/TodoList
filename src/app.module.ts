@@ -6,6 +6,7 @@ import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
+    TodoModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -16,8 +17,9 @@ import { TodoModule } from './todo/todo.module';
       entities: [__dirname + './**/**/*entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: true,
+      logging: true,
+      logger: 'file',
     }),
-    TodoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

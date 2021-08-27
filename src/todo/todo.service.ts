@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateTodoDTO } from './dtos';
-import { EditTodoDTO } from './dtos/edit-post.dto';
+import { CreateTodoDTO, EditTodoDTO } from './dtos';
 import { Todo } from './entities/todo.entity';
 
 @Injectable()
@@ -25,8 +24,13 @@ export class TodoService {
     return todo;
   }
 
-  async createOne(dto: CreateTodoDTO) {
-    const todo = this.todoRepository.create(dto as any);
+  async createOne({ title, description, deadline }: CreateTodoDTO) {
+    const todo = this.todoRepository.create({
+      title,
+      description,
+      deadline: new Date(deadline),
+    });
+
     return await this.todoRepository.save(todo);
   }
 
@@ -37,6 +41,18 @@ export class TodoService {
 
     const editedTodo = Object.assign(todo, dto);
     return await this.todoRepository.save(editedTodo);
+  }
+
+  async isDone(id: number) {
+    await this.todoRepository
+      .createQueryBuilder()
+      .update('todos')
+      .set({
+        isDone: true,
+        isDoneDate: 'now()',
+      })
+      .where('id = :id', { id: id })
+      .execute();
   }
 
   async deleteOne(id: number) {
