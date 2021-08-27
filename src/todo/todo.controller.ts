@@ -8,17 +8,23 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateTodoDTO } from './dtos';
 import { EditTodoDTO } from './dtos/edit-post.dto';
 import { TodoService } from './todo.service';
 
+@ApiTags('Todos')
 @Controller('todo')
 export class TodoController {
   constructor(private readonly todoservice: TodoService) {}
 
   @Get()
-  getMany() {
-    return this.todoservice.getMany();
+  async getMany() {
+    const data = await this.todoservice.getMany();
+    return {
+      message: 'Correct Request',
+      data,
+    };
   }
 
   @Get(':id')

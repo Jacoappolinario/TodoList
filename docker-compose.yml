@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  database:
+    image: mysql:5.6
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mytodo_db
+      MYSQL_USER: mytodo_user
+      MYSQL_PASSWORD: mytodo_password
