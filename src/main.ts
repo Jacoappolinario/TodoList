@@ -6,6 +6,7 @@ import { initSwagger } from './app.swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger();
+  const port = 3000;
 
   initSwagger(app);
 
