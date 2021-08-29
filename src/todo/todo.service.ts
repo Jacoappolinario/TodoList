@@ -15,7 +15,7 @@ export class TodoService {
     return await this.todoRepository.find();
   }
 
-  async getOne(id: number) {
+  async getOne(id: number): Promise<Todo> {
     const todo = await this.todoRepository.findOne(id);
 
     if (!todo)
@@ -24,7 +24,11 @@ export class TodoService {
     return todo;
   }
 
-  async createOne({ title, description, deadline }: CreateTodoDTO) {
+  async createOne({
+    title,
+    description,
+    deadline,
+  }: CreateTodoDTO): Promise<Todo> {
     const todo = this.todoRepository.create({
       title,
       description,
@@ -34,7 +38,7 @@ export class TodoService {
     return await this.todoRepository.save(todo);
   }
 
-  async editOne(id: number, dto: EditTodoDTO) {
+  async editOne(id: number, dto: EditTodoDTO): Promise<Todo> {
     const todo = await this.todoRepository.findOne(id);
 
     if (!todo) throw new NotFoundException('Todo does not exist');

@@ -10,6 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/common/decorators';
 import { CreateTodoDTO, EditTodoDTO } from './dtos';
 import { TodoService } from './todo.service';
 
@@ -32,16 +33,17 @@ export class TodoController {
     return this.todoservice.getOne(id);
   }
 
+  @Auth()
   @Post()
   createOne(@Body() dto: CreateTodoDTO) {
     return this.todoservice.createOne(dto);
   }
-
+  @Auth()
   @Put(':id')
   editOne(@Param('id') id: number, @Body() dto: EditTodoDTO) {
     return this.todoservice.editOne(id, dto);
   }
-
+  @Auth()
   @Patch(':id/done')
   async isDone(@Param('id') id: number) {
     await this.todoservice.isDone(id);
@@ -50,7 +52,7 @@ export class TodoController {
       isDone: 'True',
     };
   }
-
+  @Auth()
   @Delete(':id')
   deleteOne(@Param('id') id: number) {
     return this.todoservice.deleteOne(id);
