@@ -1,12 +1,15 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { initSwagger } from './app.swagger';
+import { SERVER_PORT } from './config/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger();
-  const port = 3000;
+  const config = app.get(ConfigService);
+  const port = parseInt(config.get<string>(SERVER_PORT), 10) || 3000;
 
   initSwagger(app);
 
@@ -16,7 +19,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  await app.listen(port);
   logger.log(`Server is running in localhost:3000`);
 }
 bootstrap();

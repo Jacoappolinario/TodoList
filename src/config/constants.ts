@@ -1,3 +1,4 @@
+export const SERVER_PORT = 'PORT';
 export const JWT_TOKEN = 'JWT_TOKEN';
 export const DATABASE_HOST = 'DATABASE_HOST';
 export const DATABASE_PORT = 'DATABASE_PORT';
