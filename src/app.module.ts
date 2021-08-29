@@ -12,6 +12,7 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
 } from './config/constants';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import {
       envFilePath: '.env',
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
