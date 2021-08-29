@@ -1,8 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { User } from 'src/user/entities';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -35,4 +38,8 @@ export class Todo {
   @CreateDateColumn({ type: 'timestamp' })
   @ApiProperty()
   created_at: Date;
+
+  @ManyToOne(() => User, (user) => user.todos, { eager: true })
+  @JoinColumn({ name: 'user' })
+  user: User;
 }

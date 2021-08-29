@@ -4,10 +4,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { hash } from 'bcrypt';
+import { Todo } from 'src/todo/entities/todo.entity';
 
 @Entity('users')
 export class User {
@@ -26,6 +28,9 @@ export class User {
   @Column({ type: 'varchar', length: 128, nullable: false, select: false })
   password: string;
 
+  @Column({ type: 'simple-array' })
+  roles: string[];
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   created_at: Date;
 
@@ -37,4 +42,7 @@ export class User {
     }
     this.password = await hash(this.password, 10);
   }
+
+  @OneToOne((_) => Todo, (post) => post.user, { cascade: true })
+  todos: Todo;
 }

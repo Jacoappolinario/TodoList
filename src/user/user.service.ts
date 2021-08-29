@@ -1,16 +1,16 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDTO, EditUserDTO } from './dtos';
 import { User } from './entities';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateUserDTO, EditUserDTO } from './dtos';
 
 export interface UserFindOne {
   id?: number;
-  email: string;
+  email?: string;
 }
 
 @Injectable()
@@ -24,19 +24,22 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  async getOne(id: number) {
-    const user = await this.userRepository.findOne(id);
-    if (!user) throw new NotFoundException('User does not exists');
+  async getOne(id: number, userEntity?: User) {
+    const user = await this.userRepository
+      .findOne(id)
+      .then((u) =>
+        !userEntity ? u : !!u && userEntity.id === u.id ? u : null,
+      );
+
+    if (!user)
+      throw new NotFoundException('User does not exists or unauthorized');
 
     return user;
   }
 
   async createOne(dto: CreateUserDTO) {
-    const userAlreadyExists = await this.userRepository.findOne({
-      email: dto.email,
-    });
-
-    if (userAlreadyExists)
+    const userExist = await this.userRepository.findOne({ email: dto.email });
+    if (userExist)
       throw new BadRequestException('User already registered with email');
 
     const newUser = this.userRepository.create(dto);
@@ -46,15 +49,15 @@ export class UserService {
     return user;
   }
 
-  async editOne(id: number, dto: EditUserDTO) {
-    const user = await this.getOne(id);
+  async editOne(id: number, dto: EditUserDTO, userEntity?: User) {
+    console.log(dto);
+    const user = await this.getOne(id, userEntity);
     const editedUser = Object.assign(user, dto);
     return await this.userRepository.save(editedUser);
   }
 
-  async deleteOne(id: number) {
-    const user = await this.getOne(id);
-
+  async deleteOne(id: number, userEntity?: User) {
+    const user = await this.getOne(id, userEntity);
     return await this.userRepository.remove(user);
   }
 

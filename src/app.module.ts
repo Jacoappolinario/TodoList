@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { TodoModule } from './todo/todo.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AccessControlModule } from 'nest-access-control';
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -13,10 +14,10 @@ import {
   DATABASE_USERNAME,
 } from './config/constants';
 import { AuthModule } from './auth/auth.module';
+import { roles } from './app.roles';
 
 @Module({
   imports: [
-    TodoModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -37,8 +38,10 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    UserModule,
+    AccessControlModule.forRoles(roles),
     AuthModule,
+    UserModule,
+    TodoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
