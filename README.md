@@ -4,6 +4,7 @@
 API de To-do List desenvolvida utilizando NestJS para a Ubistart.
 
 ## Instalação
+Você precisa instalar o Node.js e o Yarn, e Docker e Docker Compose.
 
 Clone o Repositorio
 
@@ -38,6 +39,11 @@ Por padrão a aplicação já vem com um administrador cadastrado, para utilizar
 ```
 email: admin@gmail.com
 password: 12345
+```
+
+Para cessar a documentação da API no Swagger utilize o segunte caminho.
+```
+http://localhost:3000/docs/
 ```
 
 ## Screenshots
