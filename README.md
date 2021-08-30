@@ -1,8 +1,7 @@
 
 # TodoList - Desafio para backend em NodeJS
 
-A brief description of what this project does and who it's for
-
+API de To-do List desenvolvida utilizando NestJS para a Ubistart.
 
 ## Instalação
 
