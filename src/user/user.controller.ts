@@ -45,11 +45,6 @@ export class UserController {
     return { data };
   }
 
-  @Auth({
-    possession: 'any',
-    action: 'create',
-    resource: AppResource.USER,
-  })
   @Post()
   async createOne(@Body() dto: CreateUserDTO) {
     const data = await this.userService.createOne(dto);
