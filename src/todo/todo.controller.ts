@@ -64,10 +64,8 @@ export class TodoController {
     let data;
 
     if (this.roleBuilder.can(user.roles).updateAny(AppResource.TODO).granted) {
-      // Puede editar cualquier POST...
       data = await this.todoservice.editOne(id, dto);
     } else {
-      // Puede editar solo los propios...
       data = await this.todoservice.editOne(id, dto, user);
     }
 

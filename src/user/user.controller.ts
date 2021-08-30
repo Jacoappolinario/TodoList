@@ -70,10 +70,8 @@ export class UserController {
     let data;
 
     if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
-      // esto es un admin
       data = await this.userService.editOne(id, dto);
     } else {
-      // esto es un author
       const { roles, ...rest } = dto;
       data = await this.userService.editOne(id, rest, user);
     }
@@ -90,10 +88,8 @@ export class UserController {
     let data;
 
     if (this.rolesBuilder.can(user.roles).updateAny(AppResource.USER).granted) {
-      // esto es un admin
       data = await this.userService.deleteOne(id);
     } else {
-      // esto es un author
       data = await this.userService.deleteOne(id, user);
     }
     return { message: 'User deleted', data };
